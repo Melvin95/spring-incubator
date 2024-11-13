@@ -5,6 +5,7 @@ import entelect.training.incubator.spring.flight.model.FlightsSearchRequest;
 import entelect.training.incubator.spring.flight.model.SearchType;
 import entelect.training.incubator.spring.flight.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class FlightsService {
         return result;
     }
 
-    public Flight getFlight(Integer id) {
+    public Flight getFlight(Integer id) throws InterruptedException {
         return flightRepository.findById(id).orElse(null);
     }
 
@@ -70,8 +71,11 @@ public class FlightsService {
         return discountedFlights;
     }
 
-    public List<Flight> searchFlights(FlightsSearchRequest searchRequest) {
+    @Cacheable("FlightCache")
+    public List<Flight> searchFlights(FlightsSearchRequest searchRequest) throws InterruptedException {
         Map<SearchType, Supplier<List<Flight>>> searchStrategies = new HashMap<>();
+
+        Thread.sleep(2000); //mocking database response time to test caffeine cache
 
         searchStrategies.put(SearchType.DAYS_TO_DEPARTURE_SEARCH, () -> flightRepository.findByDepartureTimeBetweenDates(
                 LocalDateTime.now(), LocalDateTime.now().plusDays(searchRequest.getDaysToDeparture()))

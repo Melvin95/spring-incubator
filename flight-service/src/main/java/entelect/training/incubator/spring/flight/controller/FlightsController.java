@@ -53,7 +53,7 @@ public class FlightsController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getFlightById(@PathVariable Integer id) {
+    public ResponseEntity<?> getFlightById(@PathVariable Integer id) throws InterruptedException {
         LOGGER.info("Processing flight search request for flight id={}", id);
         Flight flight = this.flightsService.getFlight(id);
 
@@ -67,7 +67,7 @@ public class FlightsController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> searchFlights(@RequestBody FlightsSearchRequest searchRequest) {
+    public ResponseEntity<?> searchFlights(@RequestBody FlightsSearchRequest searchRequest) throws InterruptedException {
         LOGGER.info("Processing flight search request: {}", searchRequest);
 
         List<Flight> flights = flightsService.searchFlights(searchRequest);
