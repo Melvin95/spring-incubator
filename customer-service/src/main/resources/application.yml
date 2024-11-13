@@ -10,6 +10,13 @@ spring:
     hibernate:
       ddl-auto: create
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
 server:
   port: 8201
   error:

@@ -1,10 +1,6 @@
 package entelect.training.incubator.spring.loyalty.ws;
 
 import entelect.training.incubator.spring.loyalty.server.RewardsService;
-import entelect.training.incubator.spring.loyalty.ws.model.CaptureRewardsRequest;
-import entelect.training.incubator.spring.loyalty.ws.model.CaptureRewardsResponse;
-import entelect.training.incubator.spring.loyalty.ws.model.RewardsBalanceRequest;
-import entelect.training.incubator.spring.loyalty.ws.model.RewardsBalanceResponse;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;

@@ -30,7 +30,8 @@ public class SecurityConfig {
     InMemoryUserDetailsManager inMemoryAuthManager() {
         return new InMemoryUserDetailsManager(
                 User.builder().username("user").password("{noop}the_cake").roles("USER").build(),
-                User.builder().username("admin").password("{noop}is_a_lie").roles("ADMIN").build()
+                User.builder().username("admin").password("{noop}is_a_lie").roles("ADMIN").build(),
+                User.builder().username("loyaltyUser").password("{noop}is_a_lie").roles("LOYALTY_USER").build()
         );
     }
 
@@ -38,8 +39,10 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable() // !!! Disclaimer: NEVER DISABLE CSRF IN PRODUCTION !!!
                 .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET,"/flights/specials").hasRole("LOYALTY_USER")
                 .requestMatchers(HttpMethod.GET, "/flights/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/flights/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/flights/**").hasRole("ADMIN")
+                .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/swagger-ui/index.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
